@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RPS Arena - Admin Access</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: radial-gradient(circle at center, #1a0a0a 0%, #2e0f0f 100%);
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      overflow: hidden;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      background-image: linear-gradient(rgba(233, 69, 96, 0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(233, 69, 96, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      transform: perspective(500px) rotateX(60deg);
+      bottom: -50%;
+      z-index: -1;
+    }
+    h1, h5, .btn-gaming {
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .login-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(233, 69, 96, 0.2);
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      width: 420px;
+      position: relative;
+      animation: fadeIn 0.8s ease-out;
+      z-index: 10; /* FIX: Memastikan kad login sentiasa berada di lapisan atas background grid */
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .login-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 4px;
+      background: linear-gradient(90deg, #e94560, #b01030);
+      border-radius: 20px 20px 0 0;
+      pointer-events: none; /* FIX: Supaya garisan hiasan atas tidak block atau menghalang klik pada input */
+    }
+    .form-label {
+      color: #e94560;
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .form-control {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(233, 69, 96, 0.2);
+      color: white;
+      padding: 12px 15px;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+    .form-control:focus {
+      background: rgba(0, 0, 0, 0.5);
+      border-color: #e94560;
+      color: white;
+      box-shadow: 0 0 15px rgba(233, 69, 96, 0.2);
+      outline: none;
+    }
+    .btn-gaming {
+      background: linear-gradient(45deg, #e94560, #b01030);
+      border: none;
+      color: white;
+      padding: 14px;
+      border-radius: 10px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      font-size: 13px;
+      letter-spacing: 2px;
+      width: 100%;
+      margin-top: 15px;
+      transition: 0.3s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-gaming:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(233, 69, 96, 0.4);
+      filter: brightness(1.1);
+    }
+    .brand-title {
+      color: #e94560;
+      text-shadow: 0 0 20px rgba(233, 69, 96, 0.6);
+      font-weight: 700;
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+    .links-container {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 0.85rem;
+      position: relative;
+      z-index: 20; /* FIX: Memastikan link pautan boleh ditekan dengan lancar */
+    }
+    .custom-link {
+      color: #e94560;
+      text-decoration: none;
+      transition: 0.3s;
+      font-weight: 500;
+    }
+    .custom-link:hover {
+      color: #ff6b85;
+      text-shadow: 0 0 8px #e94560;
+    }
+    .loader {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <h1 class="brand-title">ADMIN ACCESS</h1>
+    <h5 class="text-center mb-4 text-white-50" style="font-size: 0.8rem; letter-spacing: 1px;">Restricted Zone</h5>
+
+    <div class="mb-3">
+      <label class="form-label">Admin Username</label>
+      <input type="text" id="username" class="form-control"/>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label">Password</label>
+      <input type="password" id="password" class="form-control"/>
+    </div>
+
+    <button class="btn-gaming" onclick="handleAdminLogin()">
+      <div id="btn-loader" class="loader"></div>
+      <span id="btn-text">INITIALIZE ACCESS</span>
+    </button>
+
+    <div class="links-container">
+      <a href="index.php" class="custom-link">← Back to Home</a>
+    </div>
+  </div>
+
+  <script>
+    function handleAdminLogin() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const btnText   = document.getElementById('btn-text');
+      const btnLoader = document.getElementById('btn-loader');
+
+      if (!username || !password) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      btnText.textContent = 'AUTHENTICATING...';
+      btnLoader.style.display = 'block';
+
+      fetch('admin_login.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+      })
+      .then(r => r.text())
+      .then(data => {
+        // Logik semakan respon daripada fail PHP backend
+        if (data.trim() === 'success') {
+          window.location.href = 'admin_home.php';
+        } else if (data.trim() === 'wrong_password') {
+          alert('Access Denied: Wrong password.');
+          resetButton();
+        } else if (data.trim() === 'user_not_found') {
+          alert('Access Denied: Admin not found.');
+          resetButton();
+        } else {
+          alert('System Error: Unexpected response.');
+          resetButton();
+        }
+      })
+      .catch(() => {
+        alert('System Error: Server connection failed.');
+        resetButton();
+      });
+
+      function resetButton() {
+        btnText.textContent = 'INITIALIZE ACCESS';
+        btnLoader.style.display = 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>
